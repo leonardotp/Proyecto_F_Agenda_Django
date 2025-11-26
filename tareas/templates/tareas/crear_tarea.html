@@ -1,40 +1,77 @@
+<!-- HTML para las funciones de agregar una nueva tarea-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Nueva tarea</title>
 </head>
 <body>
     <h1>Nueva tarea</h1>
 
+    <!--Deteccion por si queremos mmeter una nueva tarea con el mismo código único-->
+    {% if error %}
+        <p style="color: red;">
+            {{ error }}
+        </p>
+    {% endif %}
+
+    <!-- Formulario principal para capturar los datos de la tarea.-->
     <form method="post">
         {% csrf_token %}
-
         <p>
             <label for="codigo">Código:</label>
-            <input type="number" id="codigo" name="codigo" required />
+            <input
+                type="text"
+                id="codigo"
+                name="codigo"
+                value="{{ codigo|default_if_none:'' }}"
+            >
         </p>
 
+        <!-- Formulario = Titulo de la tarea -->
         <p>
             <label for="titulo">Título:</label>
-            <input type="text" id="titulo" name="titulo" required />
+            <input
+                type="text"
+                id="titulo"
+                name="titulo"
+                value="{{ titulo|default_if_none:'' }}"
+            >
         </p>
 
+        <!-- Formulario = Prioridad -->
         <p>
             <label for="prioridad">Prioridad:</label>
-            <input type="number" id="prioridad" name="prioridad" min="1" max="5" required />
+            <input
+                type="number"
+                id="prioridad"
+                name="prioridad"
+                value="{{ prioridad|default_if_none:'' }}"
+            >
         </p>
 
+        <!-- Formulario = checkbox para ver si ya acabamos la tarea -->
         <p>
             <label for="completada">
-                <input type="checkbox" id="completada" name="completada" />
+                <input
+                    type="checkbox"
+                    id="completada"
+                    name="completada"
+                    {% if completada %}checked{% endif %}
+                >
                 ¿Completada?
             </label>
         </p>
 
+        <!-- Cuando ya acabamos le damos en guardar tarea-->
         <button type="submit">Guardar</button>
     </form>
 
-    <p><a href="{% url 'lista_tareas' %}">Volver a la lista</a></p>
+    <!-- Enlace que nos conecta con la lista de tareass -->
+    <p>
+        <a href="{% url 'lista_tareas' %}">
+            Volver a la lista
+        </a>
+    </p>
 </body>
 </html>

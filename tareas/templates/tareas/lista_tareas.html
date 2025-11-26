@@ -1,27 +1,53 @@
+<!-- HTML para la lista de tareas -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>Agenda de tareas</title>
 </head>
 <body>
+
+    <!-- Encabezado central -->
     <h1>Agenda de tareas</h1>
 
+    <!-- Si aún no hay tareas solo mostramos eso en la pantalla -->
     {% if tareas %}
+        <!-- Si sí hubo tareas se enlistan y se muestran en pantalla junto con toda su información-->
         <ul>
             {% for tarea in tareas %}
                 <li>
-                    <strong>{{ tarea.codigo }}</strong> - {{ tarea.titulo }}
+                    <strong>{{ tarea.codigo }} - {{ tarea.titulo }}</strong>
                     {% if tarea.completada %}
-                        (completada)
+                        (completada en {{ tarea.fecha|date:"d/m/Y" }})                        |
+                        <a href="{% url 'completar_tarea' tarea.codigo %}">
+                            Marcar como pendiente
+                        </a>
                     {% else %}
                         (pendiente)
+                        |
+                        <a href="{% url 'completar_tarea' tarea.codigo %}">
+                            Marcar como completada
+                        </a>
                     {% endif %}
+
+                    <!-- Botón para borrar una tarea -->
+                    |
+                    <a href="{% url 'eliminar_tarea' tarea.codigo %}">
+                        Eliminar
+                    </a>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
+        <!-- Mensaje para cuando no haya tareas -->
         <p>No hay tareas todavía.</p>
     {% endif %}
+
+    <!-- Enlace que nos lleva a la parte en donde podemos crear una tarea  -->
+    <p>
+        <a href="{% url 'crear_tarea' %}">
+            Crear una nueva tarea
+        </a>
+    </p>
 </body>
 </html>
