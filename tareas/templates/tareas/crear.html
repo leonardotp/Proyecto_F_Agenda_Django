@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta lang="es">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>Nueva Tarea</title>
+</head>
+
+<body>
+<header><h1>Nueva Tarea</h1></header>
+
+<main class="container">
+
+    <div class="containerLabel">
+        <h2>Crear nueva tarea</h2>
+        <a href="{% url 'lista_tareas' %}">
+            <button class="btnAgregar">Volver</button>
+        </a>
+    </div>
+
+    <div class="tableContainer">
+
+        <form method="POST" class="formNuevo">
+            {% csrf_token %}
+
+            <div class="formGroup">
+                <label>Título</label>
+                <input type="text" name="titulo" required>
+            </div>
+
+            <div class="formGroup">
+                <label>Prioridad</label>
+                <input type="number" name="prioridad" min="1" max="5" value="3">
+            </div>
+
+            <div class="formGroup">
+                <label>Fecha</label>
+                <input type="date" name="fecha">
+            </div>
+
+            <div class="formGroup">
+                <label>Etiquetas</label>
+                <input type="text" name="etiquetas">
+            </div>
+
+            <div class="formGroup">
+                <label>Descripción</label>
+                <textarea name="descripcion"></textarea>
+            </div>
+
+            <button type="submit" class="btnAgregar btnFull">Guardar</button>
+        </form>
+
+    </div>
+
+</main>
+
+</body>
+</html>

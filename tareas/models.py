@@ -3,7 +3,7 @@ from django.db import models
 class Tarea(models.Model):
     # ID humano tipo "T-0001". Django ya tiene un id numérico interno,
     # esto es solo para mantener el estilo de tu proyecto viejo.
-    codigo = models.CharField(max_length=10, unique=True)
+    codigo = models.CharField(max_length=10, unique=True, null=True, blank=True)
 
     # Lo que antes era --titulo
     titulo = models.CharField(max_length=200)
@@ -31,6 +31,12 @@ class Tarea(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if not self.pk and not self.codigo:
+            last = Tarea.objects.order_by('-id').first()
+            next_number = 1 if not last else last.id + 1
+            self.codigo = f"T-{next_number:04d}"
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        # Así se verá en el admin, tipo "T-0001 - Estudiar Python"
         return f"{self.codigo} - {self.titulo}"

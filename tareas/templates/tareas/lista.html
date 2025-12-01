@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>Tareas</title>
+</head>
+
+<body>
+<header>
+    <h1>Organizador de Tareas</h1>
+</header>
+
+<main class="container">
+
+    <div class="containerLabel">
+        <h2>❌ Tareas Pendientes: {{ pendientes.count }}</h2>
+        <a href="{% url 'crear_tarea' %}" ><button class="btnAgregar">➕ Nueva Tarea</button></a>
+    </div>
+
+    <div class="tableContainer">
+
+        <div class="row headers">
+            <div>#</div>
+            <div>Titulo</div>
+            <div>Prioridad</div>
+            <div>Fecha</div>
+            <div>Descripción</div>
+            <div>Etiquetas</div>
+            <div>Acciones</div>
+        </div>
+
+        {% for t in pendientes %}
+        <div class="row">
+            <div>{{ forloop.counter }}</div>
+            <div>{{ t.titulo }}</div>
+            <div>{{ t.prioridad }}</div>
+            <div>{{ t.fecha }}</div>
+            <div>{{ t.descripcion }}</div>
+            <div>{{ t.etiquetas }}</div>
+
+            <div>
+                <a href="{% url 'editar_tarea' t.id %}">✏️</a>
+                <a href="{% url 'eliminar_tarea' t.id %}">🗑️</a>
+                <a href="{% url 'toggle_tarea' t.id %}">✔️</a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="voidTareas">Sin tareas pendientes</p>
+        {% endfor %}
+    </div>
+
+
+    <!-- COMPLETADAS -->
+    <div class="containerLabel">
+        <h2>✅ Tareas Completas: {{ completas.count }}</h2>
+    </div>
+
+    <div class="tableContainer">
+
+        <div class="row headers">
+            <div>#</div>
+            <div>Titulo</div>
+            <div>Prioridad</div>
+            <div>Fecha</div>
+            <div>Descripción</div>
+            <div>Etiquetas</div>
+            <div>Acciones</div>
+        </div>
+
+        {% for t in completas %}
+        <div class="row">
+            <div>{{ forloop.counter }}</div>
+            <div>{{ t.titulo }}</div>
+            <div>{{ t.prioridad }}</div>
+            <div>{{ t.fecha }}</div>
+            <div>{{ t.descripcion }}</div>
+            <div>{{ t.etiquetas }}</div>
+            <div>
+                <a href="{% url 'toggle_tarea' t.id %}">↩️</a>
+                <a href="{% url 'eliminar_tarea' t.id %}">🗑️</a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="voidTareas">Sin tareas completas</p>
+        {% endfor %}
+
+    </div>
+
+</main>
+</body>
+</html>
