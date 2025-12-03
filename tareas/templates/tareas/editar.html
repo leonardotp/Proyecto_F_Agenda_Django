@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>Editar Tarea</title>
+</head>
+
+<body>
+<header><h1>Editar {{ tarea.codigo }}</h1></header>
+
+<main class="container">
+
+    <div class="containerLabel">
+        <h2>Editar tarea</h2>
+        <a href="{% url 'lista_tareas' %}">
+            <button class="btnAgregar">Volver</button>
+        </a>
+    </div>
+
+    <div class="tableContainer">
+
+        <form method="POST" class="formNuevo">
+            {% csrf_token %}
+
+            <div class="formGroup">
+                <label>Título</label>
+                <input type="text" name="titulo" value="{{ tarea.titulo }}" required>
+            </div>
+
+            <div class="formGroup">
+                <label>Prioridad</label>
+                <input type="number" name="prioridad" min="1" max="5" value="{{ tarea.prioridad }}">
+            </div>
+
+            <div class="formGroup">
+                <label>Fecha</label>
+                <input type="date" name="fecha" value="{{ tarea.fecha|date:'Y-m-d' }}">
+            </div>
+
+            <div class="formGroup">
+                <label>Etiquetas</label>
+                <input type="text" name="etiquetas" value="{{ tarea.etiquetas }}">
+            </div>
+
+            <div class="formGroup">
+                <label>Descripción</label>
+                <textarea name="descripcion">{{ tarea.descripcion }}</textarea>
+            </div>
+
+            <button type="submit" class="btnAgregar btnFull">
+                Guardar Cambios
+            </button>
+        </form>
+
+    </div>
+
+</main>
+
+</body>
+</html>
